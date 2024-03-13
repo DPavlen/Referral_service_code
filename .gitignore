@@ -1,0 +1,9 @@
+venv
+.env
+.env-non-dev
+.env-render
+__pycache__
+# *.ipynb*
+.idea
+.vscode
+/venv/
