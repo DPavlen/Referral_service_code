@@ -6,7 +6,18 @@ from app.database import Base
 
 
 class User(Base):
-    """Модель юзера. Описание в соответсвии с Алхимии vers.2."""
+    """
+    Модель пользователя.
+    Описание в соответствии с SQLAlchemy версии 2.
+    Attributes:
+        __tablename__ (str): Имя таблицы в БД.
+        id (int): Первичный ключ пользователя.
+        email (str): Электронная почта пользователя.
+        hashed_password (str): Захешированный пароль пользователя.
+        referral_codes (list[ReferralCode]): Список реферальных кодов пользователя.
+    Methods:
+        __str__: Возвращает строковое представление пользователя.
+    """
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -20,7 +31,19 @@ class User(Base):
 
 
 class ReferralCode(Base):
-    """Модель реферального кода."""
+    """
+    Модель реферального кода.
+    Attributes:
+        __tablename__ (str): Имя таблицы в БД.
+        id (int): Первичный ключ реферального кода.
+        code (str): Реферальный код.
+        expiration_date (date): Дата истечения срока действия реферального кода.
+        user_id (int): Внешний ключ на пользователя, к которому привязан реферальный код.
+        user (User): Объект пользователя, связанный с данным реферальным кодом.
+        is_active (bool): Флаг, указывающий на активность реферального кода.
+    Methods:
+        __str__: Возвращает строковое представление реферального кода.
+    """
     __tablename__ = "referral_codes"
 
     id: Mapped[int] = mapped_column(primary_key=True)

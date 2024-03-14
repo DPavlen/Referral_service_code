@@ -1,12 +1,13 @@
 from fastapi import FastAPI
-
+from app.users.router import router_auth
 
 
 app = FastAPI(
     title="API сервис для реферальной системы",
-    version="0.1.0",
-    openapi_tags="Referral_service_code",
 )
+
+app.include_router(router_auth)
+
 @app.get("/code")
 def get_hello():
     return "API сервис для реферальной системы"
