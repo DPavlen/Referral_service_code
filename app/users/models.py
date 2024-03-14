@@ -1,3 +1,4 @@
+from datetime import date
 from sqlalchemy import Boolean, ForeignKey, Date
 from sqlalchemy.orm import relationship, mapped_column, Mapped
 
@@ -24,10 +25,10 @@ class ReferralCode(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     code: Mapped[str] = mapped_column(nullable=False)
-    expiration_date: Mapped[Date] = mapped_column(nullable=False)
-    user_id: Mapped[ForeignKey] = mapped_column("users.id")
-    user: Mapped[User] = relationship(back_populates="referral_codes")
-    is_active: Mapped[Boolean] = mapped_column(default=False)
+    expiration_date: Mapped[date] = mapped_column(Date)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    user: Mapped["User"] = relationship(back_populates="referral_codes")
+    is_active: Mapped[bool] = mapped_column(Boolean, default=False)
 
     def __str__(self):
         return f"Код пользователя {self.code}"
