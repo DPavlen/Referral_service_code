@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 
 
-class SUserRegister(BaseModel):
+class SUserAuth(BaseModel):
     """Схема регистрации пользователя.
     Валидация email и password.
     """

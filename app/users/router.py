@@ -1,25 +1,20 @@
 from http.client import HTTPException
 
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Response
 
-from app.users.auth import get_password_hash
+from app.users.auth import get_password_hash, authenticate_user, create_access_token
 from app.users.dao import UserDao
-from app.users.models import User
-from app.users.schemas import SUserRegister
+from app.users.schemas import SUserAuth
 
-router_auth = APIRouter(
+
+router = APIRouter(
     prefix="/auth",
-    tags=["Аутентификация"],
-)
-
-router_users = APIRouter(
-    prefix="/users",
-    tags=["Пользователи"],
+    tags=["Auth"],
 )
 
 
-@router_auth.post("/register", status_code=201)
-async def register_user(user_data: SUserRegister):
+@router.post("/register", status_code=201)
+async def register_user(user_data: SUserAuth):
     """
     Регистрация нового пользователя.
     Parameters:
@@ -31,4 +26,20 @@ async def register_user(user_data: SUserRegister):
     if existing_user:
         raise HTTPException(status_code=500)
     hashed_password = get_password_hash(user_data.password)
-    await UserDao.add(email=user_data.email, hashed_password=hashed_password)
+    new_user = await UserDao.add(email=user_data.email, hashed_password=hashed_password)
+    return {"message": "Register has been successful!"}
+
+
+router.post("/login")
+async def login_user(response: Response, user_data:SUserAuth):
+    """Вход по логину."""
+    user = await authenticate_user(user_data.email, user_data.password)
+    access_token = create_access_token({"sub": str(user.id)})
+    response.set_cookie("access_token", access_token, httponly=True)
+    return {"message": "Login has been successful!"}
+
+
+@router.post("/logout")
+async def logout_user(response: Response):
+    """Выход пользователя и удаление токена."""
+    return response.delete_cookie("access_token")
