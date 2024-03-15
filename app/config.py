@@ -8,6 +8,9 @@ class Settings(BaseSettings):
     DB_USER: str
     DB_PASS: str
 
+    SECRET_KEY: str
+    ALGORITHM: str
+
     # Со 2 версии Pydantic, class Config был заменен на атрибут model_config
     class Config:
         env_file = ".env"

@@ -1,5 +1,7 @@
+
 from fastapi import FastAPI
-from app.users.router import router
+
+from users.router import router
 
 
 app = FastAPI(
@@ -8,6 +10,8 @@ app = FastAPI(
 
 app.include_router(router)
 
+
 @app.get("/code")
 def get_hello():
     return "API сервис для реферальной системы"
+

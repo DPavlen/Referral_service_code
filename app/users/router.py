@@ -1,11 +1,15 @@
 from http.client import HTTPException
 
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Response, Depends, HTTPException
 
-from app.users.auth import get_password_hash, authenticate_user, create_access_token
+from app.users.auth import (
+    get_password_hash,
+    authenticate_user,
+    create_access_token)
 from app.users.dao import UserDao
 from app.users.schemas import SUserAuth
-
+from users.dependencies import get_current_user
+from users.models import User
 
 router = APIRouter(
     prefix="/auth",
@@ -30,16 +34,23 @@ async def register_user(user_data: SUserAuth):
     return {"message": "Register has been successful!"}
 
 
-router.post("/login")
+@router.post("/login")
 async def login_user(response: Response, user_data:SUserAuth):
     """Вход по логину."""
     user = await authenticate_user(user_data.email, user_data.password)
     access_token = create_access_token({"sub": str(user.id)})
-    response.set_cookie("access_token", access_token, httponly=True)
-    return {"message": "Login has been successful!"}
+    response.set_cookie("referral_access_token", access_token, httponly=True)
+    # TODO refresh token
+    return {"referral_access_token": access_token}
 
 
 @router.post("/logout")
 async def logout_user(response: Response):
     """Выход пользователя и удаление токена."""
     return response.delete_cookie("access_token")
+
+
+@router.get("/me")
+async def read_users_me(current_user: User = Depends(get_current_user)):
+    """Возвращает текущего пользователя."""
+    return current_user

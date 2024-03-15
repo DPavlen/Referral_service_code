@@ -52,5 +52,4 @@ async def authenticate_user(email: EmailStr, password: str):
     """
     user = await UserDao.find_one_or_none(email=email)
     if not user and verify_password(password, user.password):
-        return None
-    return user
+        return user
