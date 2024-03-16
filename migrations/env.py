@@ -10,13 +10,13 @@ from alembic import context
 sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
 
 from app.config import settings
-from app.database import Base
+from app.database import Base, DATABASE_URL
 from app.users.models import User, ReferralCode
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-breakpoint()
+# breakpoint()
 config.set_main_option("sqlalchemy.url", f"{settings.DATABASE_URL}?async_fallback=True")
 
 # Interpret the config file for Python logging.
