@@ -18,7 +18,7 @@ router = APIRouter(
 )
 
 
-@router.post("/register", status_code=201)
+@router.post("/register")
 async def register_user(user_data: SUserAuth):
     """
     Регистрация нового пользователя.
@@ -29,10 +29,10 @@ async def register_user(user_data: SUserAuth):
     """
     existing_user = await UserDao.find_one_or_none(email=user_data.email)
     if existing_user:
-        raise HTTPException(status_code=500)
+        raise HTTPException(status_code=500, detail="User is already existing")
     hashed_password = get_password_hash(user_data.password)
-    new_user = await UserDao.add(email=user_data.email, hashed_password=hashed_password)
-    return {"message": "Register has been successful!"}
+    await UserDao.add(email=user_data.email, hashed_password=hashed_password)
+    return {"message": "Регистрация прошла успешно!"}
 
 
 @router.post("/login")

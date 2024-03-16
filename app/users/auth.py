@@ -8,7 +8,8 @@ from config import settings
 from users.dao import UserDao
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
+# hashed_password = pwd_context.hash("test")
+# print(hashed_password)
 
 def get_password_hash(password: str) -> str:
     """

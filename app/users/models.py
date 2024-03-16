@@ -1,8 +1,11 @@
 from datetime import date
 from sqlalchemy import Boolean, ForeignKey, Date
 from sqlalchemy.orm import relationship, mapped_column, Mapped
+# for revision
+# from ..database import Base
 
-from ..database import Base
+# for uvicorn --reload
+from database import Base
 
 
 class User(Base):
@@ -24,9 +27,9 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True, comment="PK таблицы users")
-    name: Mapped[str] = mapped_column(nullable=False, comment="Имя пользователя")
-    family_name: Mapped[str] = mapped_column(nullable=False, comment="Фамилия пользователя")
-    middle_name: Mapped[str] = mapped_column(nullable=False, comment="Отчество пользователя")
+    name: Mapped[str] = mapped_column(nullable=True, comment="Имя пользователя")
+    family_name: Mapped[str] = mapped_column(nullable=True, comment="Фамилия пользователя")
+    middle_name: Mapped[str] = mapped_column(nullable=True, comment="Отчество пользователя")
     email: Mapped[str] = mapped_column(nullable=False, comment="Электронная почта пользователя")
     hashed_password: Mapped[str] = mapped_column(nullable=False, comment="Хэш-пароль пользователя")
     referral_codes: Mapped[list["ReferralCode"]] = relationship(
