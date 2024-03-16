@@ -2,8 +2,8 @@ from fastapi import Request, HTTPException, Depends, status
 from jose import jwt, JWTError
 from datetime import datetime
 
-from app.config import settings
-from app.users.dao import UserDao
+from config import settings
+from users.dao import UserDao
 
 
 def get_token(request: Request, status=None):
@@ -30,5 +30,5 @@ async def get_current_user(token: str = Depends(get_token)):
     return user
 
 
-user = get_current_user()
+# user = get_current_user()
 

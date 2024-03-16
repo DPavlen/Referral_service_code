@@ -2,18 +2,19 @@ from http.client import HTTPException
 
 from fastapi import APIRouter, Response, Depends, HTTPException
 
-from app.users.auth import (
+from users.auth import (
     get_password_hash,
     authenticate_user,
-    create_access_token)
-from app.users.dao import UserDao
-from app.users.schemas import SUserAuth
+    create_access_token
+)
+from users.dao import UserDao
+from users.schemas import SUserAuth
 from users.dependencies import get_current_user
 from users.models import User
 
 router = APIRouter(
     prefix="/auth",
-    tags=["Auth"],
+    tags=["Авторизация и рагистрация пользователей"],
 )
 
 
