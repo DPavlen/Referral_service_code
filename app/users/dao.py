@@ -1,10 +1,10 @@
-from users.schemas import SReferralCode
-from database import async_session_maker
-from dao.base import BaseDAO
-from users.models import User, ReferralCode
-from sqlalchemy import select, insert, update, text
+from sqlalchemy import select, insert
 from sqlalchemy.orm import selectinload, load_only
 
+from app.dao.base import BaseDAO
+from app.database import async_session_maker
+from app.users.models import User, ReferralCode
+from app.users.schemas import SReferralCode
 
 
 class UserDao(BaseDAO):
@@ -14,17 +14,15 @@ class UserDao(BaseDAO):
     @classmethod
     async def get_user_and_codes(cls, **filter_by):
         async with async_session_maker() as session:
-
             query = (
                 select(cls.model)
                 .filter_by(**filter_by)
-                .options(selectinload(cls.model.referral_codes), 
+                .options(selectinload(cls.model.referral_codes),
                          load_only(cls.model.id, cls.model.email))
             )
             result = await session.execute(query)
             return result.scalar_one_or_none()
             # return result.mappings().one_or_none()
-    
 
     @classmethod
     async def add(cls, **data):
@@ -50,7 +48,7 @@ class ReferralCodeDAO(BaseDAO):
 
         async with async_session_maker() as session:
             res = await session.execute(query)
-            existing_codes = res.scalars().all() 
+            existing_codes = res.scalars().all()
             if data.code in existing_codes:
                 return {"message": "Code already exists"}
             else:

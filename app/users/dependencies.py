@@ -2,9 +2,8 @@ from fastapi import Request, HTTPException, Depends, status
 from jose import jwt, JWTError
 from datetime import datetime
 
-from config import settings
-from users.dao import UserDao
-
+from app.config import settings
+from app.users.dao import UserDao
 
 def get_token(request: Request, status=None):
     token = request.headers.get("referral_access_token")
@@ -29,6 +28,4 @@ async def get_current_user(token: str = Depends(get_token)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="")
     return user
 
-
 # user = get_current_user()
-

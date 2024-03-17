@@ -2,15 +2,15 @@ from http.client import HTTPException
 
 from fastapi import APIRouter, Response, Depends, HTTPException
 
-from users.auth import (
+from app.users.auth import (
     get_password_hash,
     authenticate_user,
     create_access_token
 )
-from users.dao import UserDao
-from users.schemas import SUserAuth
-from users.dependencies import get_current_user
-from users.models import User
+from app.users.dao import UserDao
+from app.users.dependencies import get_current_user
+from app.users.models import User
+from app.users.schemas import SUserAuth
 
 router = APIRouter(
     prefix="/auth",
@@ -36,7 +36,7 @@ async def register_user(user_data: SUserAuth):
 
 
 @router.post("/login")
-async def login_user(response: Response, user_data:SUserAuth):
+async def login_user(response: Response, user_data: SUserAuth):
     """Вход по логину."""
     user = await authenticate_user(user_data.email, user_data.password)
     access_token = create_access_token({"sub": str(user.id)})

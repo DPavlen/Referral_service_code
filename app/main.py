@@ -1,9 +1,6 @@
-import sys
-import os
-
-
 from fastapi import FastAPI
-from users.router import router
+
+from app.users.router import router
 
 app = FastAPI(
     debug=True,

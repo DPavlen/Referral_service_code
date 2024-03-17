@@ -4,10 +4,12 @@ from jose import jwt
 from passlib.context import CryptContext
 from pydantic import EmailStr
 
-from config import settings
-from users.dao import UserDao
+from app.config import settings
+from app.users.dao import UserDao
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
 # hashed_password = pwd_context.hash("test")
 # print(hashed_password)
 

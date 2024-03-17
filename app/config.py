@@ -1,8 +1,7 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-
     DB_HOST: str
     DB_PORT: int
     DB_NAME: str
@@ -15,6 +14,7 @@ class Settings(BaseSettings):
     # Со 2 версии Pydantic, class Config был заменен на атрибут model_config
     class Config:
         env_file = ".env"
+
     # model_config = SettingsConfigDict(env_file=".env")
 
     @property

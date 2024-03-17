@@ -1,11 +1,14 @@
 from datetime import date
+
 from sqlalchemy import Boolean, ForeignKey, Date
 from sqlalchemy.orm import relationship, mapped_column, Mapped
-# for revision
-# from ..database import Base
 
 # for uvicorn --reload
-from database import Base
+from app.database import Base
+
+
+# for revision
+# from ..database import Base
 
 
 class User(Base):
